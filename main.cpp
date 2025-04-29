@@ -10,8 +10,8 @@ void Draw();
 
 Engine engine;
 
-int screenHeight = 720;
-int screenWidth = 720;
+float screenHeight = 720;
+float screenWidth = 720;
 
 Color backgroundColor = BLACK;
 
@@ -36,7 +36,7 @@ void Init()
     InitWindow(screenHeight, screenWidth, gameName);
     SetTargetFPS(60);
 
-    engine.Init();
+    engine.Init({screenWidth, screenHeight});
 }
 
 void DeInit()
