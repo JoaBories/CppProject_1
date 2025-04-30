@@ -2,6 +2,10 @@
 
 #include "Engine.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 void Init();
 void DeInit();
 void UpdateDraw();
@@ -29,6 +33,7 @@ int main() {
 
     
     return 0;
+
 }
 
 void Init()
