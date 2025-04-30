@@ -1,5 +1,6 @@
 #include "Utils.h"
 
+
 Utils::Utils()
 {
 }
@@ -74,7 +75,7 @@ float Utils::Sqrt(float value)
 
 float Utils::Clamp(float value, float min, float max)
 {
-	return Max(Max(value, max), min);
+	return Max(Min(value, max), min);
 }
 
 float Utils::Lerp(float a, float b, float t)
@@ -85,4 +86,14 @@ float Utils::Lerp(float a, float b, float t)
 Vector2 Utils::Vector2Lerp(Vector2 a, Vector2 b, float t)
 {
 	return { Lerp(a.x, b.x, t), Lerp(a.y, b.y, t) };
+}
+
+Color Utils::ColorLerp(Color a, Color b, float t)
+{
+	Color result = Color();
+	result.r = Lerp(a.r, b.r, t);
+	result.g = Lerp(a.g, b.g, t);
+	result.b = Lerp(a.b, b.b, t);
+	result.a = Lerp(a.a, b.a, t);
+	return result;
 }

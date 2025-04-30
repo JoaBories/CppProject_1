@@ -2,9 +2,7 @@
 
 #include "Engine.h"
 
-#include <iostream>
-using std::cout;
-using std::endl;
+
 
 void Init();
 void DeInit();
@@ -15,7 +13,7 @@ void Draw();
 Engine engine;
 
 float screenHeight = 720;
-float screenWidth = 720;
+float screenWidth = 1280;
 
 Color backgroundColor = BLACK;
 
@@ -38,7 +36,7 @@ int main() {
 
 void Init()
 {
-    InitWindow(screenHeight, screenWidth, gameName);
+    InitWindow(screenWidth, screenHeight, gameName);
     SetTargetFPS(60);
 
     engine.Init({screenWidth, screenHeight});

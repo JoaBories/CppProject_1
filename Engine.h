@@ -2,6 +2,7 @@
 #include <string>
 #include "Ball.h"
 #include "Paddle.h"
+#include "BrickWall.h"
 
 using std::string;
 
@@ -12,6 +13,8 @@ private :
 	Ball mBall;
 	Paddle mPaddle;
 
+	BrickWall mWall;
+
 	Vector2 mScreenSize;
 
 public :
@@ -20,6 +23,6 @@ public :
 
 	void Init( Vector2 screenSize );
 	void Update();
-	void Draw();
+	void Draw() const;
 };
 

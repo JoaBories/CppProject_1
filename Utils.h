@@ -1,6 +1,10 @@
 #pragma once
 #include "raylib.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 class Utils
 {
 private:
@@ -21,5 +25,6 @@ public:
 	static float Clamp(float value, float min, float max);
 	static float Lerp(float a, float b, float t);
 	static Vector2 Vector2Lerp(Vector2 a, Vector2 b, float t);
+	static Color ColorLerp(Color a, Color b, float t);
 };
 

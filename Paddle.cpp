@@ -34,7 +34,7 @@ void Paddle::Update()
 	}
 }
 
-void Paddle::Draw()
+void Paddle::Draw() const
 {
 
 	float xCentered = position.x - size.x / 2;

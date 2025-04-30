@@ -16,7 +16,7 @@ public:
 	~Paddle();
 
 	void Update();
-	void Draw();
+	void Draw() const;
 
 	Vector2 GetPosition() const { return position; }
 	Vector2 GetSize() const { return size; }
