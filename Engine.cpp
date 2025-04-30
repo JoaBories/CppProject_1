@@ -18,10 +18,12 @@ void Engine::Init( Vector2 screenSize )
 
 void Engine::Update()
 {
+	mPaddle.Update();
 	mBall.Update();
 }
 
 void Engine::Draw()
 {
+	mPaddle.Draw();
 	mBall.Draw();
 }

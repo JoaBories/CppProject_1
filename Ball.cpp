@@ -2,20 +2,20 @@
 
 void Ball::CheckBorderCollision()
 {
-	if (mPosition.x - mRadius <= mScreenPos.x)
+	if (mPosition.x - mRadius <= mScreenPos.x && mDirection.x <= 0)
 	{
 		mDirection = { -mDirection.x, mDirection.y };
 	}
-	else if (mPosition.x + mRadius >= mScreenPos.x + mScreenSize.x)
+	else if (mPosition.x + mRadius >= mScreenPos.x + mScreenSize.x && mDirection.x >= 0)
 	{
 		mDirection = { -mDirection.x, mDirection.y };
 	}
 
-	if (mPosition.y - mRadius <= mScreenPos.y)
+	if (mPosition.y - mRadius <= mScreenPos.y && mDirection.y <= 0)
 	{
 		mDirection = { mDirection.x, -mDirection.y };
 	}
-	else if (mPosition.y + mRadius >= mScreenPos.y + mScreenSize.y)
+	else if (mPosition.y + mRadius >= mScreenPos.y + mScreenSize.y && mDirection.y >= 0)
 	{
 		mDirection = { mDirection.x, -mDirection.y };
 	}
