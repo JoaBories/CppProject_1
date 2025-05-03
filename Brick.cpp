@@ -69,6 +69,6 @@ void Brick::Draw() const
 		Color noLife = ColorFromNormalized({ 0,0,0,1 });
 		float blend = (float) mLivesCount / mMaxLives;
 
-		DrawRectangle(xCentered, yCentered, mSize.x, mSize.y, Utils::ColorLerp(noLife, fullLife, blend));
+		DrawRectangle(xCentered, yCentered, mSize.x - 2, mSize.y - 2, Utils::ColorLerp(noLife, fullLife, blend));
 	}
 }

@@ -11,11 +11,14 @@ private :
 
 public :
 	BrickWall();
-	BrickWall(int plan[5][10], Vector2 screenSize, int gapSize);
+	BrickWall(int plan[5][10], Vector2 screenSize);
 	~BrickWall();
 
-	//Brick* GetBrickPtr(int row, int column);
+	Brick* GetBrickPtr(int row, int column);
 	//int GetNumberOfBricks();
+
+	int GetRows() const;
+	int GetColumns() const;
 
 	void Draw() const;
 

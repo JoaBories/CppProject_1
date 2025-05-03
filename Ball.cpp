@@ -38,6 +38,33 @@ void Ball::ResolvePaddleCollision()
 	}
 }
 
+void Ball::ResolveBrickWallCollision()
+{
+	if (mPosition.y >= mScreenSize.y / 3 * 2)
+	{
+		return;
+	}
+
+	int rStart = (mPosition.y / Brick::mSize.x) - 1;
+	int rEnd = rStart+3;
+
+	int cStart = (mPosition.x / Brick::mSize.y) - 1;
+	int cEnd = cStart+3;
+
+	for (int r = rStart; r < rEnd; r++)
+	{
+		for (int c = cStart; c < cEnd; c++)
+		{
+			if (mAlreadyCollidedX && mAlreadyCollidedY)
+			{
+				return;
+			}
+
+			ResolveBrickCollision(mWallPtr->GetBrickPtr(r, c));
+		}
+	}
+}
+
 void Ball::ResolveBrickCollision(Brick *brick)
 {
 	if (brick->IsAlive()) 
@@ -45,8 +72,16 @@ void Ball::ResolveBrickCollision(Brick *brick)
 		if (CheckAABB(brick->GetPosition(), brick->GetSize()))
 		{
 			Vector2 normal = GetCollisionAxis(brick->GetPosition(), brick->GetSize());
-			mDirection = { mDirection.x * normal.x, mDirection.y * normal.y };
+			mDirection = { (!mAlreadyCollidedX) ? mDirection.x * normal.x : mDirection.x, (!mAlreadyCollidedY) ? mDirection.y * normal.y : mDirection.y };
 			brick->TakeDamage();
+			if (normal.x == -1)
+			{
+				mAlreadyCollidedX = true;
+			}
+			if (normal.y == -1)
+			{
+				mAlreadyCollidedY = true;
+			}
 		}
 	}
 }
@@ -68,17 +103,32 @@ bool Ball::CheckAABB(Vector2 position, Vector2 size) const
 
 Vector2 Ball::GetCollisionAxis(Vector2 position, Vector2 size) const
 {
-	Vector2 distance = Utils::Distance(mPosition, position);
-	Vector2 overlap = { size.x / 2 + mRadius - distance.x, size.y / 2 + mRadius - distance.y };
+	Vector2 distance = Utils::Normalize(Utils::AbsDistance(mPosition, position));
+	Vector2 result;
 
-	if (overlap.x < overlap.y)
+	if (Utils::Abs(distance.x - distance.y) >= 0.1)
 	{
-		return { 1,-1 };
+		if (distance.x > distance.y)
+		{
+			result = { -1, 1 };
+		}
+		else
+		{
+			result = { 1, -1 };
+		}
 	}
 	else
 	{
-		return { -1,1 };
+		result = { 1, 1 };
 	}
+	
+
+	//if (distance.x < 0.7 && distance.x > -0.7) result.x = 1;
+	//else result.x = -1;
+	//if (distance.y < 0.7 && distance.y > -0.7) result.y = 1;
+	//else result.y = -1;
+
+	return result;
 }
 
 Ball::Ball() :
@@ -88,7 +138,10 @@ mDirection{ 0,0 },
 mRadius{ 0 },
 mScreenPos{ 0,0 },
 mScreenSize{ 0,0 },
-mPaddlePtr{ nullptr }
+mPaddlePtr{ nullptr },
+mWallPtr{ nullptr },
+mAlreadyCollidedX{ false },
+mAlreadyCollidedY{ false }
 {
 }
 
@@ -104,17 +157,25 @@ mRadius{ radius },
 mScreenPos{ screenPosition },
 mScreenSize{ screenSize },
 mPaddlePtr{ paddle },
-mWallPtr{ brick }
+mWallPtr{ brick },
+mAlreadyCollidedX{ false },
+mAlreadyCollidedY{ false }
 {
 }
 
 void Ball::Update()
 {
+
+	mAlreadyCollidedX = false;
+	mAlreadyCollidedY = false;
+
 	mPosition.x += mDirection.x * mSpeed * GetFrameTime();
 	mPosition.y += mDirection.y * mSpeed * GetFrameTime();
 
 	ResolvePaddleCollision();
 	ResolveBorderCollision();
+
+	ResolveBrickWallCollision();
 }
 
 void Ball::Draw() const

@@ -97,3 +97,8 @@ Color Utils::ColorLerp(Color a, Color b, float t)
 	result.a = Lerp(a.a, b.a, t);
 	return result;
 }
+
+float Utils::Sign(float value)
+{
+	return (value >= 0) ? 1 : -1;
+}

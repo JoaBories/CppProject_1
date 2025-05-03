@@ -22,8 +22,12 @@ private :
 
 	BrickWall* mWallPtr;
 
+	bool mAlreadyCollidedX;
+	bool mAlreadyCollidedY;
+
 	void ResolveBorderCollision();
 	void ResolvePaddleCollision();
+	void ResolveBrickWallCollision();
 	void ResolveBrickCollision(Brick *brick);
 	bool CheckAABB(Vector2 position, Vector2 size) const;
 	Vector2 GetCollisionAxis(Vector2 position, Vector2 size) const;

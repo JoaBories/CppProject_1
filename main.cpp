@@ -1,8 +1,5 @@
 #include "raylib.h"
-
 #include "Engine.h"
-
-
 
 void Init();
 void DeInit();
@@ -13,12 +10,11 @@ void Draw();
 Engine engine;
 
 float screenHeight = 720;
-float screenWidth = 1280;
+float screenWidth = 720;
 
 Color backgroundColor = BLACK;
 
 const char* gameName = "BrickBreaker";
-
 
 int main() {
 
@@ -29,9 +25,9 @@ int main() {
         UpdateDraw();
     }
 
-    
-    return 0;
+	DeInit();
 
+    return 0;
 }
 
 void Init()
