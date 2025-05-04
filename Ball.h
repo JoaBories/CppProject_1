@@ -15,7 +15,6 @@ private :
 
 	float mRadius;
 
-	Vector2 mScreenPos;
 	Vector2 mScreenSize;
 
 	Paddle* mPaddlePtr;
@@ -24,6 +23,8 @@ private :
 
 	bool mAlreadyCollidedX;
 	bool mAlreadyCollidedY;
+
+	bool isLaunched = false;
 
 	void ResolveBorderCollision();
 	void ResolvePaddleCollision();
@@ -35,7 +36,9 @@ private :
 public :
 	Ball();
 	~Ball();
-	Ball(Vector2 startPos, float speed, float radius, Vector2 screenPosition, Vector2 screenSize, Paddle *paddle, BrickWall *brick);
+	Ball(Vector2 startPos, float speed, float radius, Vector2 screenSize, Paddle *paddle, BrickWall *brick);
+
+	Vector2 GetPosition() const;
 
 	void Update();
 	void Draw() const;

@@ -2,26 +2,27 @@
 #include "Utils.h"
 
 BrickWall::BrickWall() :
-mColumns{ 10 },
-mRows{ 5 },
+mColumns{ 0 },
+mRows{ 0 },
 mScreenSize{ 0,0 },
-mBricks{ Brick() }
+mBricks{ vector<vector<Brick>>()}
 {
 }
 
-BrickWall::BrickWall(int plan[5][10], Vector2 screenSize) :
-mColumns{ 10 },
-mRows{ 5 },
+BrickWall::BrickWall(int rows, int column, Vector2 screenSize) :
+mColumns{ column },
+mRows{ rows },
 mScreenSize{ screenSize }
 {
-	Brick::SetBrickSize({ screenSize.x / mColumns, screenSize.y / (mRows * 2) });
+	Brick::SetBrickSize({ mScreenSize.x / 10, mScreenSize.x/ 10 });
 	
-	for (size_t r = 0; r < mRows; r++)
+	for (int r = 0; r < mRows; r++)
 	{
-		for (size_t c = 0; c < mColumns; c++)
+		mBricks.push_back( {} );
+		for (int c = 0; c < mColumns; c++)
 		{
-			Vector2 position = { screenSize.x / mColumns * (c+1) - Brick::mSize.x/2, screenSize.y / (mRows * 2) * (r + 1) - Brick::mSize.y/2};
-			mBricks[r][c] = Brick(position, c, r, plan[r][c]);
+			Vector2 position = { Brick::mSize.x/2 + Brick::mSize.x * c, Brick::mSize.y / 2 + Brick::mSize.y * r };
+			mBricks[r].push_back(Brick(position, c, r, 1));
 		}
 	}
 
@@ -35,6 +36,24 @@ BrickWall::~BrickWall()
 Brick* BrickWall::GetBrickPtr(int row, int column)
 {
 	return &mBricks[row][column];
+}
+
+int BrickWall::GetNumberOfBricks()
+{
+	int count = 0;
+
+	for (vector<Brick> row : mBricks)
+	{
+		for (Brick brick : row)
+		{
+			if (brick.IsAlive())
+			{
+				count++;
+			}
+		}
+	}
+
+	return count;
 }
 
 int BrickWall::GetRows() const
@@ -56,9 +75,10 @@ void BrickWall::Draw() const
 			mBricks[r][c].Draw();
 		}
 	}
+
 }
 
-void BrickWall::Print() const
+void BrickWall::Print() const // for debugging
 {
 	for (size_t r = 0; r < mRows; r++)
 	{

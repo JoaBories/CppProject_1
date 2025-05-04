@@ -102,3 +102,12 @@ float Utils::Sign(float value)
 {
 	return (value >= 0) ? 1 : -1;
 }
+
+void Utils::DrawTextCentered(string text, Vector2 position, int fontSize)
+{
+	float xCentered = position.x - (float) MeasureText(text.c_str(), fontSize) / 2;
+	float yCentered = position.y - fontSize / 2;
+	DrawText(text.c_str(), xCentered, yCentered, fontSize, WHITE);
+
+	return;
+}

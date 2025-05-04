@@ -9,8 +9,8 @@ void Draw();
 
 Engine engine;
 
-float screenHeight = 720;
-float screenWidth = 720;
+float screenHeight = 920;
+float screenWidth = 400;
 
 Color backgroundColor = BLACK;
 

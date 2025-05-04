@@ -5,6 +5,8 @@
 using std::cout;
 using std::endl;
 
+using std::string;
+
 class Utils
 {
 private:
@@ -12,6 +14,7 @@ private:
 	~Utils();
 
 public:
+	//Math functions
 	static float SqrLenght(Vector2 vector);
 	static float Lenght(Vector2 vector);
 	static Vector2 Normalize(Vector2 vector);
@@ -27,5 +30,8 @@ public:
 	static Vector2 Vector2Lerp(Vector2 a, Vector2 b, float t);
 	static Color ColorLerp(Color a, Color b, float t);
 	static float Sign(float value);
+
+	//Draw functions
+	static void DrawTextCentered(string text, Vector2 position, int fontSize);
 };
 
