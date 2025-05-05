@@ -7,8 +7,8 @@ using std::to_string;
 
 Engine::Engine() :
 	mPaddle{ Paddle() },
-	mBalls{ new Ball() },
-	mBonuses{ new Bonus() },
+	mBalls{ nullptr },
+	mBonuses{ nullptr },
 	mScreenSize{ 0,0 },
 	mPaddlePos{ 0,0 },
 	mPaddleSize{ 0,0 },
@@ -53,6 +53,7 @@ void Engine::Init( Vector2 screenSize )
 
 	mPaddle = Paddle( mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 	mBalls.clear();
+	mBonuses.clear();
 	mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
 }
 
@@ -102,6 +103,7 @@ void Engine::Update()
 					mBonuses.erase(mBonuses.begin() + i);
 
 					mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
+					mBalls.back()->Launch();
 					break;
 				}
 			}
@@ -135,6 +137,7 @@ void Engine::Update()
 
 			mPaddle = Paddle(mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 			mBalls.clear();
+			mBonuses.clear();
 			mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
 
 			mGameState = GameState::Play;
@@ -157,6 +160,7 @@ void Engine::Update()
 
 			mPaddle = Paddle(mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 			mBalls.clear();
+			mBonuses.clear();
 			mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
 
 			mGameState = GameState::Play;
@@ -180,8 +184,6 @@ void Engine::Draw() const
 		break;
 
 	case GameState::Play:
-		Utils::DrawTextCentered(to_string(mScore), { mPaddle.GetPosition().x, mScreenSize.y / 4 * 3}, 40);
-
 		mWall.Draw();
 		mPaddle.Draw();
 
@@ -195,6 +197,8 @@ void Engine::Draw() const
 			bonus->Draw();
 		}
 
+		Utils::DrawTextCentered(to_string(mScore), { mPaddle.GetPosition().x, mScreenSize.y / 4 * 3}, 40);
+		DrawRectangle(0, mYLoosePosition, mScreenSize.x, mScreenSize.y - mYLoosePosition, RED);
 		break;
 
 	case GameState::Loose:
@@ -215,13 +219,11 @@ void Engine::Draw() const
 
 void Engine::Loose()
 {
-	cout << "You lose!" << endl;
 	mGameState = GameState::Loose;
 }
 
 void Engine::Win()
 {
-	cout << "You win!" << endl;
 	mGameState = GameState::Win;
 }
 

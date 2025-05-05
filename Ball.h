@@ -46,6 +46,8 @@ public :
 	Vector2 GetTryBonus() const;
 	void ResetTryBonus();
 
+	void Launch();
+
 	void Update();
 	void Draw() const;
 

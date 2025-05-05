@@ -10,7 +10,6 @@ private :
 	int mColumn;
 	int mRow;
 
-
 public :
 	static Vector2 mSize;
 	static int mMaxLives;

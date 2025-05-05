@@ -65,10 +65,22 @@ void Brick::Draw() const
 		float xCentered = mPosition.x - mSize.x / 2;
 		float yCentered = mPosition.y - mSize.y / 2;
 
-		Color fullLife = ColorFromNormalized({ 1,1,1,1 });
-		Color noLife = ColorFromNormalized({ 0,0,0,1 });
+		Color fullLife;
+		Color noLife;
+
+		if ((mRow + mColumn) % 2 == 0)
+		{
+			fullLife = ColorFromNormalized({ 1,1,1,1 });
+			noLife = ColorFromNormalized({ 0,0,0,1 });
+		}
+		else
+		{
+			fullLife = ColorFromNormalized({ 0.3,0.3,0.8,1 });
+			noLife = ColorFromNormalized({ 0,0,0,1 });
+		}
+		
 		float blend = (float) mLivesCount / mMaxLives;
 
-		DrawRectangle(xCentered, yCentered, mSize.x - 2, mSize.y - 2, Utils::ColorLerp(noLife, fullLife, blend));
+		DrawRectangle(xCentered, yCentered, mSize.x - 4, mSize.y - 4, Utils::ColorLerp(noLife, fullLife, blend));
 	}
 }

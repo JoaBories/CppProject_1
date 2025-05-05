@@ -48,7 +48,7 @@ void Ball::ResolveBrickWallCollision()
 
 	for (int r = rStart; r < rEnd; r++)
 	{
-		if (r > mWallPtr->GetRows() - 1) 
+		if (r > mWallPtr->GetRows() - 1 || r < 0) 
 		{
 			break;
 		}
@@ -60,7 +60,7 @@ void Ball::ResolveBrickWallCollision()
 				return;
 			}
 
-			if (c > mWallPtr->GetColumns() - 1)
+			if (c > mWallPtr->GetColumns() - 1 || c < 0)
 			{
 				break;
 			}
@@ -182,10 +182,13 @@ void Ball::ResetTryBonus()
 	mTryBonus = { 0,0 };
 }
 
+void Ball::Launch()
+{
+	mIsLaunched = true;
+}
+
 void Ball::Update()
 {
-	cout << mIsLaunched << endl;
-
 	if (mIsLaunched)
 	{
 		mAlreadyCollidedX = false;
