@@ -78,6 +78,7 @@ void Ball::ResolveBrickCollision(Brick *brick)
 			Vector2 normal = GetCollisionAxis(brick->GetPosition(), brick->GetSize());
 			mDirection = { (!mAlreadyCollidedX) ? mDirection.x * normal.x : mDirection.x, (!mAlreadyCollidedY) ? mDirection.y * normal.y : mDirection.y };
 			brick->TakeDamage();
+			mTryBonus = brick->GetPosition();
 			*mScorePtr += 1;
 			if (normal.x == -1)
 			{
@@ -127,11 +128,6 @@ Vector2 Ball::GetCollisionAxis(Vector2 position, Vector2 size) const
 		result = { 1, 1 };
 	}
 
-	//if (distance.x < 0.7 && distance.x > -0.7) result.x = 1;
-	//else result.x = -1;
-	//if (distance.y < 0.7 && distance.y > -0.7) result.y = 1;
-	//else result.y = -1;
-
 	return result;
 }
 
@@ -145,7 +141,9 @@ mPaddlePtr{ nullptr },
 mWallPtr{ nullptr },
 mScorePtr{ nullptr },
 mAlreadyCollidedX{ false },
-mAlreadyCollidedY{ false }
+mAlreadyCollidedY{ false },
+mIsLaunched{ false },
+mTryBonus{ 0,0 }
 {
 }
 
@@ -164,7 +162,8 @@ mWallPtr{ brick },
 mScorePtr{ score },
 mAlreadyCollidedX{ false },
 mAlreadyCollidedY{ false },
-isLaunched{ false }
+mIsLaunched{ false },
+mTryBonus{ 0,0 }
 {
 }
 
@@ -173,11 +172,21 @@ Vector2 Ball::GetPosition() const
 	return mPosition;
 }
 
+Vector2 Ball::GetTryBonus() const
+{
+	return mTryBonus;
+}
+
+void Ball::ResetTryBonus()
+{
+	mTryBonus = { 0,0 };
+}
+
 void Ball::Update()
 {
-	cout << isLaunched << endl;
+	cout << mIsLaunched << endl;
 
-	if (isLaunched)
+	if (mIsLaunched)
 	{
 		mAlreadyCollidedX = false;
 		mAlreadyCollidedY = false;
@@ -194,7 +203,7 @@ void Ball::Update()
 	{
 		if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT))
 		{
-			isLaunched = true;
+			mIsLaunched = true;
 		}
 	}
 }

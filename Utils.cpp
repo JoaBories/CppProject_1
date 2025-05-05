@@ -103,6 +103,15 @@ float Utils::Sign(float value)
 	return (value >= 0) ? 1 : -1;
 }
 
+int Utils::RandInt(int min, int max)
+{
+	static random_device rd;
+	static mt19937 gen(rd());
+
+	uniform_int_distribution<> distr(min, max);
+	return distr(gen);
+}
+
 void Utils::DrawTextCentered(string text, Vector2 position, int fontSize)
 {
 	float xCentered = position.x - (float) MeasureText(text.c_str(), fontSize) / 2;

@@ -5,6 +5,11 @@
 using std::cout;
 using std::endl;
 
+#include <random>
+using std::random_device;
+using std::mt19937;
+using std::uniform_int_distribution;
+
 using std::string;
 
 class Utils
@@ -30,6 +35,8 @@ public:
 	static Vector2 Vector2Lerp(Vector2 a, Vector2 b, float t);
 	static Color ColorLerp(Color a, Color b, float t);
 	static float Sign(float value);
+
+	static int RandInt(int min, int max);
 
 	//Draw functions
 	static void DrawTextCentered(string text, Vector2 position, int fontSize);

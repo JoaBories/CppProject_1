@@ -1,10 +1,16 @@
 #include "Bonus.h"
 
-Bonus::Bonus()
+Bonus::Bonus() :
+	mPosition{ 0,0 },
+	mRadius{ 0 },
+	mSpeed{ 0 }
 {
 }
 
-Bonus::Bonus(Vector2 startPos, Vector2 size, float speed)
+Bonus::Bonus(Vector2 startPos, float radius, float speed) :
+	mPosition{ startPos },
+	mRadius{ radius },
+	mSpeed{ speed }
 {
 }
 
@@ -33,7 +39,7 @@ Vector2 Bonus::GetPosition() const
 	return mPosition;
 }
 
-bool Bonus::ResolvePaddleAABB(Vector2 position, Vector2 size)
+bool Bonus::ResolvePaddleAABB(Vector2 position, Vector2 size) const
 {
 	bool test1 = mPosition.x - mRadius >= position.x + size.x / 2;
 	bool test2 = mPosition.x + mRadius <= position.x - size.x / 2;

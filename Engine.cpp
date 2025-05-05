@@ -7,8 +7,8 @@ using std::to_string;
 
 Engine::Engine() :
 	mPaddle{ Paddle() },
-	mBalls{ Ball() },
-	mBonuses{ Bonus() },
+	mBalls{ new Ball() },
+	mBonuses{ new Bonus() },
 	mScreenSize{ 0,0 },
 	mPaddlePos{ 0,0 },
 	mPaddleSize{ 0,0 },
@@ -25,6 +25,10 @@ Engine::Engine() :
 
 Engine::~Engine()
 {
+	for (Ball* b : mBalls) {
+		delete b;
+	}
+	mBalls.clear();
 }
 
 void Engine::Init( Vector2 screenSize )
@@ -49,7 +53,7 @@ void Engine::Init( Vector2 screenSize )
 
 	mPaddle = Paddle( mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 	mBalls.clear();
-	mBalls.push_back(Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
+	mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
 }
 
 void Engine::Update()
@@ -71,11 +75,42 @@ void Engine::Update()
 
 		for (size_t i = 0; i < mBalls.size(); i++)
 		{
-			mBalls[i].Update();
+			mBalls[i]->Update();
 
-			if(mBalls[i].GetPosition().y >= mYLoosePosition)
+			if (mBalls[i]->GetTryBonus().x != 0 || mBalls[i]->GetTryBonus().y != 0)
 			{
+				TrySpawnBonus(mBalls[i]->GetTryBonus());
+				mBalls[i]->ResetTryBonus();
+			}
+
+			if(mBalls[i]->GetPosition().y >= mYLoosePosition)
+			{
+				delete mBalls[i];
 				mBalls.erase(mBalls.begin() + i);
+			}
+		}
+
+		for (size_t i = 0; i < mBonuses.size(); i++)
+		{
+			mBonuses[i]->Update();
+
+			if (mBonuses[i]->GetPosition().y >= mScreenSize.y / 20 * 17)
+			{
+				if (mBonuses[i]->ResolvePaddleAABB(mPaddle.GetPosition(), mPaddle.GetSize()))
+				{
+					delete mBonuses[i];
+					mBonuses.erase(mBonuses.begin() + i);
+
+					mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
+					break;
+				}
+			}
+
+			if (mBonuses[i]->GetPosition().y >= mYLoosePosition)
+			{
+				delete mBonuses[i];
+				mBonuses.erase(mBonuses.begin() + i);
+				break;
 			}
 		}
 		
@@ -100,8 +135,7 @@ void Engine::Update()
 
 			mPaddle = Paddle(mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 			mBalls.clear();
-			Ball tempBall = Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore);
-			mBalls.push_back(tempBall);
+			mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
 
 			mGameState = GameState::Play;
 		}
@@ -123,8 +157,7 @@ void Engine::Update()
 
 			mPaddle = Paddle(mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 			mBalls.clear();
-			Ball tempBall = Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore);
-			mBalls.push_back(tempBall);
+			mBalls.push_back(new Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
 
 			mGameState = GameState::Play;
 		}
@@ -152,10 +185,16 @@ void Engine::Draw() const
 		mWall.Draw();
 		mPaddle.Draw();
 
-		for (Ball ball : mBalls)
+		for (Ball* ball : mBalls)
 		{
-			ball.Draw();
+			ball->Draw();
 		}
+
+		for (Bonus* bonus : mBonuses)
+		{
+			bonus->Draw();
+		}
+
 		break;
 
 	case GameState::Loose:
@@ -184,6 +223,14 @@ void Engine::Win()
 {
 	cout << "You win!" << endl;
 	mGameState = GameState::Win;
+}
+
+void Engine::TrySpawnBonus(Vector2 pos)
+{
+	if (Utils::RandInt(0,100) >= 50)
+	{
+		mBonuses.push_back(new Bonus(pos, 10, 100));
+	}
 }
 
 

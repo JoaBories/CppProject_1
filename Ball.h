@@ -26,7 +26,8 @@ private :
 	bool mAlreadyCollidedX;
 	bool mAlreadyCollidedY;
 
-	bool isLaunched = false;
+	bool mIsLaunched;
+	Vector2 mTryBonus;
 
 	void ResolveBorderCollision();
 	void ResolvePaddleCollision();
@@ -41,6 +42,9 @@ public :
 	Ball(Vector2 startPos, float speed, float radius, Vector2 screenSize, Paddle *paddle, BrickWall *brick, int *score);
 
 	Vector2 GetPosition() const;
+
+	Vector2 GetTryBonus() const;
+	void ResetTryBonus();
 
 	void Update();
 	void Draw() const;

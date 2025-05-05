@@ -13,13 +13,13 @@ private :
 public :
 	Bonus();
 	~Bonus();
-	Bonus(Vector2 startPos, Vector2 size, float speed);
+	Bonus(Vector2 startPos, float radius, float speed);
 
 	void Update();
 	void Draw() const;
 
 	Vector2 GetPosition() const;
 
-	bool ResolvePaddleAABB(Vector2 position, Vector2 size);
+	bool ResolvePaddleAABB(Vector2 position, Vector2 size) const;
 };
 

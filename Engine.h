@@ -18,8 +18,8 @@ enum GameState
 class Engine
 {
 private :
-	vector<Ball> mBalls;
-	vector<Bonus> mBonuses;
+	vector<Ball*> mBalls;
+	vector<Bonus*> mBonuses;
 	Paddle mPaddle;
 
 	BrickWall mWall;
@@ -50,5 +50,6 @@ public :
 	void Draw() const;
 	void Loose();
 	void Win();
+	void TrySpawnBonus(Vector2 pos);
 };
 
