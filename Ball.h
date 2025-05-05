@@ -21,6 +21,8 @@ private :
 
 	BrickWall* mWallPtr;
 
+	int* mScorePtr;
+
 	bool mAlreadyCollidedX;
 	bool mAlreadyCollidedY;
 
@@ -36,7 +38,7 @@ private :
 public :
 	Ball();
 	~Ball();
-	Ball(Vector2 startPos, float speed, float radius, Vector2 screenSize, Paddle *paddle, BrickWall *brick);
+	Ball(Vector2 startPos, float speed, float radius, Vector2 screenSize, Paddle *paddle, BrickWall *brick, int *score);
 
 	Vector2 GetPosition() const;
 

@@ -17,7 +17,7 @@ enum GameState
 class Engine
 {
 private :
-	Ball mBall;
+	vector<Ball*> mBalls;
 	Paddle mPaddle;
 
 	BrickWall mWall;
@@ -36,6 +36,8 @@ private :
 	float mYLoosePosition;
 
 	GameState mGameState;
+
+	int mScore;
 
 public :
 	Engine();

@@ -78,6 +78,7 @@ void Ball::ResolveBrickCollision(Brick *brick)
 			Vector2 normal = GetCollisionAxis(brick->GetPosition(), brick->GetSize());
 			mDirection = { (!mAlreadyCollidedX) ? mDirection.x * normal.x : mDirection.x, (!mAlreadyCollidedY) ? mDirection.y * normal.y : mDirection.y };
 			brick->TakeDamage();
+			*mScorePtr += 1;
 			if (normal.x == -1)
 			{
 				mAlreadyCollidedX = true;
@@ -143,6 +144,7 @@ mRadius{ 0 },
 mScreenSize{ 0,0 },
 mPaddlePtr{ nullptr },
 mWallPtr{ nullptr },
+mScorePtr{ nullptr },
 mAlreadyCollidedX{ false },
 mAlreadyCollidedY{ false }
 {
@@ -152,7 +154,7 @@ Ball::~Ball()
 {
 }
 
-Ball::Ball(Vector2 startPos, float speed, float radius, Vector2 screenSize, Paddle *paddle, BrickWall* brick) :
+Ball::Ball(Vector2 startPos, float speed, float radius, Vector2 screenSize, Paddle *paddle, BrickWall* brick, int *score) :
 mPosition{ startPos },
 mSpeed{ speed },
 mDirection{ Utils::Normalize( { 0.1, -1 } ) },
@@ -160,8 +162,10 @@ mRadius{ radius },
 mScreenSize{ screenSize },
 mPaddlePtr{ paddle },
 mWallPtr{ brick },
+mScorePtr{ score },
 mAlreadyCollidedX{ false },
-mAlreadyCollidedY{ false }
+mAlreadyCollidedY{ false },
+isLaunched{ false }
 {
 }
 
@@ -172,6 +176,8 @@ Vector2 Ball::GetPosition() const
 
 void Ball::Update()
 {
+	cout << isLaunched << endl;
+
 	if (isLaunched)
 	{
 		mAlreadyCollidedX = false;
