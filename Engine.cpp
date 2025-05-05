@@ -7,7 +7,8 @@ using std::to_string;
 
 Engine::Engine() :
 	mPaddle{ Paddle() },
-	mBalls{ &Ball() },
+	mBalls{ Ball() },
+	mBonuses{ Bonus() },
 	mScreenSize{ 0,0 },
 	mPaddlePos{ 0,0 },
 	mPaddleSize{ 0,0 },
@@ -44,11 +45,11 @@ void Engine::Init( Vector2 screenSize )
 
 	mWall = BrickWall( 5, 10, mScreenSize );
 
+	mBonuses.clear();
+
 	mPaddle = Paddle( mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 	mBalls.clear();
-	mBalls.push_back(&Ball( mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
-
-	cout << mPaddle.GetPosition().x << " " << mPaddle.GetPosition().y << endl;
+	mBalls.push_back(Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
 }
 
 void Engine::Update()
@@ -68,31 +69,25 @@ void Engine::Update()
 	case GameState::Play:
 		mPaddle.Update();
 
-		cout << mBalls.size() << endl;
-
-		for (Ball *ball : mBalls)
-		{
-			ball->Update();
-		}
-
-		if (mWall.GetNumberOfBricks() == 0)
-		{
-			Win();
-		}
-
 		for (size_t i = 0; i < mBalls.size(); i++)
 		{
-			if(mBalls[i]->GetPosition().y >= mYLoosePosition)
+			mBalls[i].Update();
+
+			if(mBalls[i].GetPosition().y >= mYLoosePosition)
 			{
 				mBalls.erase(mBalls.begin() + i);
 			}
+		}
+		
+		if (mWall.GetNumberOfBricks() == 0)
+		{
+			Win();
 		}
 
 		if (mBalls.size() == 0)
 		{
 			Loose();
 		}
-
 
 		break;
 
@@ -105,7 +100,8 @@ void Engine::Update()
 
 			mPaddle = Paddle(mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 			mBalls.clear();
-			mBalls.push_back(&Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
+			Ball tempBall = Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore);
+			mBalls.push_back(tempBall);
 
 			mGameState = GameState::Play;
 		}
@@ -127,7 +123,8 @@ void Engine::Update()
 
 			mPaddle = Paddle(mPaddlePos, mPaddleSize, mPaddleSpeed, mScreenSize);
 			mBalls.clear();
-			mBalls.push_back(&Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore));
+			Ball tempBall = Ball(mBallPos, mBallSpeed, mBallRadius, mScreenSize, &mPaddle, &mWall, &mScore);
+			mBalls.push_back(tempBall);
 
 			mGameState = GameState::Play;
 		}
@@ -155,9 +152,9 @@ void Engine::Draw() const
 		mWall.Draw();
 		mPaddle.Draw();
 
-		for (Ball *ball : mBalls)
+		for (Ball ball : mBalls)
 		{
-			ball->Draw();
+			ball.Draw();
 		}
 		break;
 

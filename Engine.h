@@ -3,6 +3,7 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "BrickWall.h"
+#include "Bonus.h"
 
 using std::string;
 
@@ -17,7 +18,8 @@ enum GameState
 class Engine
 {
 private :
-	vector<Ball*> mBalls;
+	vector<Ball> mBalls;
+	vector<Bonus> mBonuses;
 	Paddle mPaddle;
 
 	BrickWall mWall;

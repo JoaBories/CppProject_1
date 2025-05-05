@@ -126,7 +126,6 @@ Vector2 Ball::GetCollisionAxis(Vector2 position, Vector2 size) const
 	{
 		result = { 1, 1 };
 	}
-	
 
 	//if (distance.x < 0.7 && distance.x > -0.7) result.x = 1;
 	//else result.x = -1;
